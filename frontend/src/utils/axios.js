@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
+  baseURL: 'https://orderly-back.onrender.com',
   timeout: 120000, // 2 minutes timeout
   headers: {
     'Accept': 'application/json'
