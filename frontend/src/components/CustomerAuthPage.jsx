@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // ⭐️ MODIFIED: Added Alert
 import { Container, Card, Form, Button, Image, Alert } from "react-bootstrap";
-// ⭐️ MODIFIED: Import useAuth and axios
-import { useAuth } from '../context/AuthContext.jsx'; 
-import axios from 'axios';
+import { useAuth } from '../context/AuthContext.jsx';
+import axios from '../utils/axios'; // Import configured axios instance
 
 // ✅ Global Styles (fonts, colors, toggle animation)
 const GlobalStyles = () => (
@@ -147,6 +146,7 @@ const LoginForm = ({ setIsLoginView }) => {
             onChange={(e) => setPassword(e.target.value)}
             disabled={isLoading}
             required
+            autoComplete="current-password"
           />
         </Form.Group>
 
@@ -259,6 +259,7 @@ const RegisterForm = ({ setIsLoginView }) => {
             onChange={(e) => setPassword(e.target.value)}
             disabled={isLoading}
             required
+            autoComplete="new-password"
           />
         </Form.Group>
 

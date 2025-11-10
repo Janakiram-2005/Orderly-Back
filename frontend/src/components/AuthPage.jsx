@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 // ⭐️ MODIFIED: Added 'Alert' for error messages
 import { Card, Form, Button, Image, Alert } from "react-bootstrap";
 // ⭐️ MODIFIED: Added useAuth import
-import { useAuth } from '../context/AuthContext.jsx'; 
-// ⭐️ MODIFIED: Import axios to make real API calls
-import axios from 'axios';
+import { useAuth } from '../context/AuthContext.jsx';
+import axios from '../utils/axios'; // Import configured axios instance
 
 // ✅ Global Styles (fonts, colors, AND the toggle animation)
 const GlobalStyles = () => (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // 1. Import useAuth
-import axios from 'axios'; // 2. Import axios for API calls
+import { useAuth } from '../context/AuthContext';
+import axios from '../utils/axios'; // Import our configured axios instance
 
 // 3. Import React-Bootstrap components
 import { Container, Card, Form, Button, Image, Alert, Spinner } from 'react-bootstrap';
