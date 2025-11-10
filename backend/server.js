@@ -25,12 +25,32 @@ app.use((req, res, next) => {
 });
 
 // CORS configuration with proper options
+// Use a whitelist and dynamic origin check so the response echoes the exact origin
+const whitelist = [
+  'https://orderly-bjp0.onrender.com', // Deployed frontend
+  'http://localhost:5173', // Local dev for testing
+];
+
 app.use(cors({
-  origin: 'https://orderly-bjp0.onrender.com', // Your frontend URL
+  origin: function (origin, callback) {
+    // `origin` will be undefined for same-origin requests (e.g. server-to-server, curl)
+    if (!origin) return callback(null, true);
+
+    if (whitelist.indexOf(origin) !== -1) {
+      // allow this origin
+      return callback(null, true);
+    } else {
+      // disallow other origins
+      return callback(new Error('CORS policy: This origin is not allowed: ' + origin));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Optionally handle preflight requests explicitly
+app.options('*', cors());
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
