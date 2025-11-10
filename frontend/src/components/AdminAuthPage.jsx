@@ -111,19 +111,25 @@ const AdminLoginForm = ({ setIsLoginView }) => {
 
     try {
       // Call the backend login endpoint
+      console.log('Attempting login with:', { email });
       const res = await axios.post('/api/auth/admin/login', { email, password });
+      console.log('Server response:', res.data);
 
       if (!res.data || !res.data.token) {
+        console.error('Missing token in response:', res.data);
         throw new Error('Invalid response from server');
       }
 
       const { token, ...userData } = res.data;
+      console.log('Processed user data:', { userData, hasToken: !!token });
       
       // Only call login if we have both userData and token
       if (userData && token) {
         login(userData, token);
+        console.log('Login successful, redirecting...');
         navigate('/admin/dashboard'); // Redirect to the admin dashboard
       } else {
+        console.error('Invalid login data:', { userData, hasToken: !!token });
         throw new Error('Invalid login data received');
       }
       // ⭐️ --- END OF FIX --- ⭐️
@@ -175,7 +181,7 @@ const AdminLoginForm = ({ setIsLoginView }) => {
             onChange={(e) => setPassword(e.target.value)}
             required
             disabled={loading}
-            autocomplete="current-password"
+            autoComplete="current-password"
           />
         </Form.Group>
 
