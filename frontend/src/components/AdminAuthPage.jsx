@@ -113,14 +113,19 @@ const AdminLoginForm = ({ setIsLoginView }) => {
       // Call the backend login endpoint
       const res = await axios.post('/api/auth/admin/login', { email, password });
 
-      // ⭐️ --- START OF FIX --- ⭐️
-      // The backend returns { _id, email, role, token }
-      // We separate the token from the rest of the user data
-      const { token, ...userData } = res.data;
+      if (!res.data || !res.data.token) {
+        throw new Error('Invalid response from server');
+      }
 
-      // Now, userData = { _id, email, role } and token = "your-token"
-      // This prevents sending `undefined` to the login function
-      login(userData, token);
+      const { token, ...userData } = res.data;
+      
+      // Only call login if we have both userData and token
+      if (userData && token) {
+        login(userData, token);
+        navigate('/admin/dashboard'); // Redirect to the admin dashboard
+      } else {
+        throw new Error('Invalid login data received');
+      }
       // ⭐️ --- END OF FIX --- ⭐️
       
       navigate('/admin/dashboard'); // Redirect to the admin dashboard
@@ -170,6 +175,7 @@ const AdminLoginForm = ({ setIsLoginView }) => {
             onChange={(e) => setPassword(e.target.value)}
             required
             disabled={loading}
+            autocomplete="current-password"
           />
         </Form.Group>
 
